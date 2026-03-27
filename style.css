@@ -1,0 +1,59 @@
+:root {
+    --magenta-crazy: #D11D5B; /* El color de tu etiqueta roja */
+    --negro-rock: #000000;
+    --blanco-limpio: #FFFFFF;
+    --font-titulos: 'Courier New', Courier, monospace; /* Para emular el estilo del logo */
+}
+
+.btn-comprar {
+    background-color: var(--magenta-crazy);
+    color: white;
+    font-weight: bold;
+    border-radius: 50px;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-comprar:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px rgba(209, 29, 91, 0.4);
+}
+
+.main-header {
+    background-color: var(--negro-rock);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-logo {
+    height: 60px; /* Ajustá esto según prefieras el tamaño */
+    width: auto;
+    filter: drop-shadow(0px 0px 2px rgba(255, 255, 255, 0.2)); /* Le da un toque de relieve */
+}
+
+/* Estilo para los links del menú */
+.main-header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.main-header nav ul li a {
+    color: var(--blanco-limpio);
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.main-header nav ul li a.active {
+    color: var(--magenta-crazy);
+    font-weight: bold;
+}
