@@ -7,7 +7,24 @@ function agregarAlCarrito(nombre, precio, idTalle) {
     
     carrito.push(producto);
     document.getElementById('cart-count').innerText = carrito.length;
-    alert("¡Producto agregado!");
+    
+    // CAMBIO: En lugar de alert, usamos nuestra notificación
+    mostrarNotificacion(`¡${nombre} agregado!`);
+}
+
+let notificationTimeout; // Variable global para controlar el tiempo
+
+function mostrarNotificacion(mensaje) {
+    const notice = document.getElementById('notification-container');
+    notice.innerText = mensaje;
+    notice.style.display = 'block';
+
+    // Limpiamos el tiempo anterior si el usuario vuelve a hacer clic rápido
+    clearTimeout(notificationTimeout);
+
+    notificationTimeout = setTimeout(() => {
+        notice.style.display = 'none';
+    }, 3000);
 }
 
 function abrirCarrito() {
