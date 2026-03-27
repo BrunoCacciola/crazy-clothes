@@ -3,75 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crazy Clothes | Ropa para todas las edades</title>
+    <title>Crazy Clothes | Tienda Online</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header class="main-header">
-    <div class="logo-container">
-        <a href="index.html">
-            <img src="img/logo.png" alt="Crazy Clothes Logo" class="nav-logo">
-        </a>
-    </div>
-    <nav>
-        <ul>
-            <li><a href="#" class="active">Inicio</a></li>
-            <li><a href="#productos">Productos</a></li>
-            <li><a href="#">Nosotros</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-    </nav>
-    <div class="header-cart">
-        <button onclick="abrirCarrito()" class="btn-cart">
-            🛒 Ir al Carrito <span id="cart-count">0</span>
-        </button>
-    </div>
-</header>
+        <div class="logo-container">
+            <img src="img/logo.png" alt="Crazy Clothes" class="nav-logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Inicio</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="https://instagram.com/crazyclothes73" target="_blank">Instagram</a></li>
+            </ul>
+        </nav>
+        <div class="header-cart">
+            <button onclick="abrirCarrito()" class="btn-cart">
+                🛒 Carrito (<span id="cart-count">0</span>)
+            </button>
+        </div>
+    </header>
 
     <section class="hero">
         <div class="hero-content">
-            <h1>EQUIPÁ A TODA LA FAMILIA</h1>
-            <p>De una mamá de cole para otras mamás. Calidad y onda en un solo lugar.</p>
-            <a href="#productos" class="btn-primary">VER NOVEDADES</a>
+            <h1>CRAZY CLOTHES</h1>
+            <p>Ropa para todas las edades. Calidad y estilo para tu familia.</p>
+            <a href="#productos" class="btn-primary">VER PRODUCTOS</a>
         </div>
     </section>
 
-    <section id="productos" class="products-grid">
-        <div class="product-card">
-            <img src="img/pijama-nino.jpg" alt="Pijama Niño">
-            <h3>Pijama Invierno Niño</h3>
-            <p class="price">$12.500</p>
-            <select id="talle-pijama">
-                <option value="4">Talle 4</option>
-                <option value="6">Talle 6</option>
-                <option value="8">Talle 8</option>
-            </select>
-            <button onclick="agregarAlCarrito('Pijama Niño', 12500, 'talle-pijama')" class="btn-add">Agregar</button>
+    <section id="productos" class="container">
+        <h2 class="section-title">Nuestros Destacados</h2>
+        <div class="products-grid">
+            
+            <div class="product-card">
+                <div class="img-container"><img src="img/logo.png" alt="Termica"></div> <h3>Camiseta Térmica Niños</h3>
+                <p class="price">$12.000</p>
+                <select id="talle-termica">
+                    <option value="4">Talle 4</option>
+                    <option value="6">Talle 6</option>
+                    <option value="8">Talle 8</option>
+                    <option value="10">Talle 10</option>
+                </select>
+                <button onclick="agregarAlCarrito('Camiseta Térmica Niños', 12000, 'talle-termica')" class="btn-add">Agregar al carrito</button>
+            </div>
+
+            <div class="product-card">
+                <div class="img-container"><img src="img/logo.png" alt="Sabanas"></div>
+                <h3>Juego de Sábanas Queen</h3>
+                <p class="price">$25.000</p>
+                <select id="talle-sabana">
+                    <option value="Queen">Queen</option>
+                    <option value="1 Plaza">1 Plaza</option>
+                </select>
+                <button onclick="agregarAlCarrito('Juego de Sábanas', 25000, 'talle-sabana')" class="btn-add">Agregar al carrito</button>
+            </div>
+
         </div>
-        </section>
+    </section>
 
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="cerrarCarrito()">&times;</span>
-            <h2>Tu Pedido Crazy</h2>
-            <div id="cart-items">
-                </div>
-            <hr>
-            <div class="cart-total">
-                <strong>Total: $<span id="total-price">0</span></strong>
+            <h2>Tu Carrito</h2>
+            <div id="cart-items"></div>
+            <div class="cart-footer">
+                <p>Total: <strong>$<span id="total-price">0</span></strong></p>
+                <button onclick="enviarPedidoWhatsApp()" class="btn-whatsapp">Finalizar Pedido por WhatsApp</button>
             </div>
-            <button onclick="enviarPedidoWhatsApp()" class="btn-whatsapp">
-                ✅ Finalizar Pedido por WhatsApp
-            </button>
         </div>
     </div>
-
-    <footer>
-        <p>Seguinos en Instagram: <strong>@crazyclothes73</strong></p>
-        <p>WhatsApp: +54 11 5898-0778</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
