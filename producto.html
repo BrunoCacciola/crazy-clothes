@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Producto | Crazy Clothes</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo-container">
+            <a href="index.html"><img src="img/logo.png" alt="Crazy Clothes" class="nav-logo"></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="index.html#productos">Productos</a></li>
+            </ul>
+        </nav>
+        <div class="header-cart">
+            <button onclick="location.href='index.html'" class="btn-cart">Volver a la Tienda</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="product-detail-grid">
+            <div class="detail-img">
+                <img id="img-prod" src="" alt="">
+            </div>
+            <div class="detail-info">
+                <h1 id="nombre-prod" class="section-title" style="text-align: left;"></h1>
+                <p id="precio-prod" class="price" style="font-size: 2rem;"></p>
+                
+                <div class="purchase-box">
+                    <label for="talle-select">Seleccioná tu Talle:</label>
+                    <select id="talle-select"></select>
+                    <button id="btn-add-detail" class="btn-whatsapp" style="background: var(--negro);">Agregar al Carrito</button>
+                </div>
+
+                <div class="description-box">
+                    <h3>Descripción</h3>
+                    <p id="desc-prod"></p>
+                </div>
+                
+                <div class="shipping-info" style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-left: 5px solid var(--magenta);">
+                    <p>📍 <strong>Retiros:</strong> Coordinamos entrega en la zona del colegio.</p>
+                    <p>📦 <strong>Envíos:</strong> A todo el país por correo.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    fetch('productos.json')
+        .then(res => res.json())
+        .then(data => {
+            const producto = data.find(p => p.id === productId);
+            if (producto) {
+                document.title = producto.nombre + " | Crazy Clothes";
+                document.getElementById('nombre-prod').innerText = producto.nombre;
+                document.getElementById('precio-prod').innerText = `$${producto.precio}`;
+                document.getElementById('desc-prod').innerText = producto.descripcion;
+                document.getElementById('img-prod').src = producto.imagen;
+                
+                const select = document.getElementById('talle-select');
+                producto.talles.forEach(t => {
+                    let opt = document.createElement('option');
+                    opt.value = t;
+                    opt.innerText = t;
+                    select.appendChild(opt);
+                });
+
+                // Vinculamos el botón de agregar
+                document.getElementById('btn-add-detail').onclick = () => {
+                    // Aquí podrías implementar la lógica de carrito persistente, 
+                    // pero por ahora, para que funcione simple:
+                    alert(`¡${producto.nombre} agregado! Volvé al inicio para ver tu carrito.`);
+                };
+            }
+        });
+</script>
+    <style>
+        .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
+        .detail-img img { width: 100%; border-radius: 10px; border: 1px solid #ddd; }
+        .purchase-box { margin: 20px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
+        @media (max-width: 768px) { .product-detail-grid { grid-template-columns: 1fr; } }
+    </style>
+</body>
+</html>

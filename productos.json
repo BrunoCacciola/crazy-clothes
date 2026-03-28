@@ -1,0 +1,18 @@
+[
+  {
+    "id": "termica-nino",
+    "nombre": "Camiseta Térmica Niños",
+    "precio": 12000,
+    "descripcion": "Ideal para el colegio. Tela térmica de alta calidad que mantiene el calor corporal sin pesadez. Costuras reforzadas para el uso diario intenso.",
+    "imagen": "img/logo.png",
+    "talles": ["4", "6", "8", "10", "12"]
+  },
+  {
+    "id": "sabana-queen",
+    "nombre": "Juego de Sábanas Queen",
+    "precio": 25000,
+    "descripcion": "Microfibra premium de 180 hilos. Tacto algodón, no destiñe y es de secado rápido. Perfectas para renovar el cuarto.",
+    "imagen": "img/logo.png",
+    "talles": ["1 Plaza", "2 Plazas", "Queen"]
+  }
+]
