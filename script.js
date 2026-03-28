@@ -1,12 +1,20 @@
-let carrito = [];
+// Inicializamos el carrito leyendo el localStorage si existe, sino un array vacío
+let carrito = JSON.parse(localStorage.getItem('crazy_cart')) || [];
 const telefonoWhatsApp = "541158980778";
 let notificationTimeout;
 
-// 1. CARGA DINÁMICA: Dibuja los productos en el index.html desde el JSON
+// Al cargar cualquier página, actualizamos el numerito del carrito en el header
 document.addEventListener('DOMContentLoaded', () => {
+    actualizarContadorInterfaz();
+    
+    // Si estamos en el index, cargamos los productos
     const contenedor = document.getElementById('contenedor-productos');
-    if (!contenedor) return; // Si no estamos en el index, no hace nada
+    if (contenedor) {
+        cargarProductosIndex(contenedor);
+    }
+});
 
+function cargarProductosIndex(contenedor) {
     fetch('productos.json')
         .then(response => response.json())
         .then(productos => {
@@ -30,33 +38,45 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             });
-        })
-        .catch(error => console.error("Error al cargar productos:", error));
-});
+        });
+}
 
-// 2. LÓGICA DEL CARRITO
+// --- LÓGICA DE PERSISTENCIA (LocalStorage) ---
+
+function guardarCarrito() {
+    localStorage.setItem('crazy_cart', JSON.stringify(carrito));
+    actualizarContadorInterfaz();
+}
+
+function actualizarContadorInterfaz() {
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) cartCount.innerText = carrito.length;
+}
+
+// --- ACCIONES DEL CARRITO ---
+
 function agregarAlCarrito(nombre, precio, idTalle) {
     const selectTalle = document.getElementById(idTalle);
     const talle = selectTalle ? selectTalle.value : "Único";
     
-    const producto = { nombre, precio, talle };
-    carrito.push(producto);
+    // Generamos un ID único temporal para poder borrarlo después sin errores
+    const producto = { 
+        idTemp: Date.now() + Math.random(), 
+        nombre, 
+        precio, 
+        talle 
+    };
     
-    document.getElementById('cart-count').innerText = carrito.length;
+    carrito.push(producto);
+    guardarCarrito(); // Persistimos los datos
     mostrarNotificacion(`¡${nombre} agregado!`);
 }
 
-function mostrarNotificacion(mensaje) {
-    const notice = document.getElementById('notification-container');
-    if (!notice) return;
-    
-    notice.innerText = mensaje;
-    notice.style.display = 'block';
-
-    clearTimeout(notificationTimeout);
-    notificationTimeout = setTimeout(() => {
-        notice.style.display = 'none';
-    }, 3000);
+function eliminarDelCarrito(idTemp) {
+    // Filtramos el array para quitar el producto con ese ID
+    carrito = carrito.filter(item => item.idTemp !== idTemp);
+    guardarCarrito(); // Guardamos el cambio
+    abrirCarrito();   // Refrescamos la vista del modal
 }
 
 function abrirCarrito() {
@@ -67,13 +87,36 @@ function abrirCarrito() {
     lista.innerHTML = "";
     let total = 0;
 
-    carrito.forEach((item) => {
-        total += item.precio;
-        lista.innerHTML += `<p>✅ ${item.nombre} (Talle: ${item.talle}) - $${item.precio}</p>`;
-    });
+    if (carrito.length === 0) {
+        lista.innerHTML = "<p style='text-align:center; padding:20px;'>El carrito está vacío 💨</p>";
+    } else {
+        carrito.forEach((item) => {
+            total += item.precio;
+            lista.innerHTML += `
+                <div class="cart-item" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:5px;">
+                    <div>
+                        <p><strong>${item.nombre}</strong></p>
+                        <small>Talle: ${item.talle} - $${item.precio}</small>
+                    </div>
+                    <button onclick="eliminarDelCarrito(${item.idTemp})" style="background:none; border:none; color:red; cursor:pointer; font-size:1.2rem;">🗑️</button>
+                </div>
+            `;
+        });
+    }
 
     totalDisplay.innerText = total;
     modal.style.display = "block";
+}
+
+// --- NOTIFICACIONES Y WHATSAPP ---
+
+function mostrarNotificacion(mensaje) {
+    const notice = document.getElementById('notification-container');
+    if (!notice) return;
+    notice.innerText = mensaje;
+    notice.style.display = 'block';
+    clearTimeout(notificationTimeout);
+    notificationTimeout = setTimeout(() => { notice.style.display = 'none'; }, 3000);
 }
 
 function cerrarCarrito() {
