@@ -19,7 +19,7 @@
             </ul>
         </nav>
         <div class="header-cart">
-            <button onclick="location.href='index.html'" class="btn-cart">Volver a la Tienda</button>
+            <button onclick="abrirCarrito()" class="btn-cart">🛒 Carrito (<span id="cart-count">0</span>)</button>
         </div>
     </header>
 
@@ -35,7 +35,7 @@
                 <div class="purchase-box">
                     <label for="talle-select">Seleccioná tu Talle:</label>
                     <select id="talle-select"></select>
-                    <button id="btn-add-detail" class="btn-whatsapp" style="background: var(--negro);">Agregar al Carrito</button>
+                    <button id="btn-add-detail" class="btn-whatsapp" style="background: var(--magenta);">Agregar al Carrito</button>
                 </div>
 
                 <div class="description-box">
@@ -51,43 +51,54 @@
         </div>
     </main>
 
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarCarrito()">&times;</span>
+            <h2>Tu Carrito</h2>
+            <div id="cart-items"></div>
+            <div class="cart-footer">
+                <p>Total: <strong>$<span id="total-price">0</span></strong></p>
+                <button onclick="enviarPedidoWhatsApp()" class="btn-whatsapp">Finalizar Pedido por WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-container" class="notification"></div>
+
+    <script src="script.js"></script>
+
     <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
 
-    fetch('productos.json')
-        .then(res => res.json())
-        .then(data => {
-            const producto = data.find(p => p.id === productId);
-            if (producto) {
-                document.title = producto.nombre + " | Crazy Clothes";
-                document.getElementById('nombre-prod').innerText = producto.nombre;
-                document.getElementById('precio-prod').innerText = `$${producto.precio}`;
-                document.getElementById('desc-prod').innerText = producto.descripcion;
-                document.getElementById('img-prod').src = producto.imagen;
-                
-                const select = document.getElementById('talle-select');
-                producto.talles.forEach(t => {
-                    let opt = document.createElement('option');
-                    opt.value = t;
-                    opt.innerText = t;
-                    select.appendChild(opt);
-                });
+        fetch('productos.json')
+            .then(res => res.json())
+            .then(data => {
+                const producto = data.find(p => p.id === productId);
+                if (producto) {
+                    document.title = producto.nombre + " | Crazy Clothes";
+                    document.getElementById('nombre-prod').innerText = producto.nombre;
+                    document.getElementById('precio-prod').innerText = `$${producto.precio}`;
+                    document.getElementById('desc-prod').innerText = producto.descripcion;
+                    document.getElementById('img-prod').src = producto.imagen;
+                    
+                    const select = document.getElementById('talle-select');
+                    producto.talles.forEach(t => {
+                        let opt = document.createElement('option');
+                        opt.value = t;
+                        opt.innerText = t;
+                        select.appendChild(opt);
+                    });
 
-                // Vinculamos el botón de agregar
-                document.getElementById('btn-add-detail').onclick = () => {
-                    // Aquí podrías implementar la lógica de carrito persistente, 
-                    // pero por ahora, para que funcione simple:
-                    alert(`¡${producto.nombre} agregado! Volvé al inicio para ver tu carrito.`);
-                };
-            }
-        });
-</script>
-    <style>
-        .product-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; }
-        .detail-img img { width: 100%; border-radius: 10px; border: 1px solid #ddd; }
-        .purchase-box { margin: 20px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; }
-        @media (max-width: 768px) { .product-detail-grid { grid-template-columns: 1fr; } }
-    </style>
+                    // MODIFICACIÓN CLAVE: Usamos la función del script.js
+                    document.getElementById('btn-add-detail').onclick = () => {
+                        // Reutilizamos la lógica de agregarAlCarrito pasándole los datos correctos
+                        agregarAlCarrito(producto.nombre, producto.precio, 'talle-select');
+                        
+                        // Opcional: Podrías hacer que el botón diga "¡Añadido!" por un segundo
+                    };
+                }
+            });
+    </script>
 </body>
 </html>
